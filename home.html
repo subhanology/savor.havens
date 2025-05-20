@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Savor Havens - Home</title>
+  <style>
+  
+  * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-weight: 700;
+      font-size: 24px;
+      color: #00796b;
+      cursor: default;
+      user-select: none;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      font-weight: 600;
+      color: #00796b;
+      align-items: center;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #00796b;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+    }
+
+    nav ul li a:hover {
+      color: #004d40;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      overflow: hidden;
+    }
+
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 3rem;
+      font-weight: 700;
+      text-shadow: 0 0 15px rgba(0,0,0,0.7);
+      text-align: center;
+      max-width: 90%;
+      padding: 0 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #00796b;
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 2.2rem;
+    }
+
+    #gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      margin-bottom: 60px;
+    }
+
+    #gallery img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    #gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    #testimonials {
+      background: #f1f8f7;
+      padding: 60px 20px;
+      border-radius: 12px;
+      max-width: 900px;
+      margin: 0 auto 60px auto;
+    }
+
+    #testimonials .testimonial-box {
+      font-style: italic;
+      font-size: 1.2rem;
+      color: #555;
+      line-height: 1.5;
+      position: relative;
+      padding-left: 40px;
+      margin-bottom: 40px;
+    }
+
+    #testimonials .testimonial-box:last-child {
+      margin-bottom: 0;
+    }
+
+    #testimonials .testimonial-box::before {
+      content: '“';
+      font-size: 3rem;
+      color: #00796b;
+      position: absolute;
+      left: 10px;
+      top: -10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    #team {
+      padding: 80px 20px;
+    }
+
+    #team .team-members {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    #team .team-member {
+      background: #e0f2f1;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 20px;
+      max-width: 250px;
+      text-align: center;
+    }
+
+    #team .team-member img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    #team .team-member h3 {
+      color: #00796b;
+      margin-bottom: 6px;
+      font-size: 1.2rem;
+    }
+
+    #team .team-member p {
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    footer {
+      background: #004d40;
+      color: #e0f2f1;
+      text-align: center;
+      padding: 20px 10px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero-text {
+        font-size: 2rem;
+      }
+
+      #team .team-members {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Savor Havens</div>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li>
+        <a href="#cart" aria-label="Cart">
+          <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm0 2m10-2c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3h11.17c.55 0 1.04-.35 1.21-.87l2.58-7.49a.996.996 0 0 0-.96-1.34H6.21L5.27 4H2v2h2l3.6 7.59-1.35 2.44c-.18.32-.27.69-.27 1.07 0 1.1.9 2 2 2z" />
+          </svg>
+          <span id="cart-count">0</span>
+        </a>
+      </li>
+      <li>
+        <a href="#account" aria-label="My Account">
+          <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+          </svg>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <section class="hero" id="home">
+    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1470&q=80" alt="Delicious Food" />
+    <div class="hero-text">
+      Taste the magic of Savor Havens – Your online culinary delight!
+    </div>
+  </section>
+
+  <div class="container">
+
+    <section id="gallery">
+      <h2>Our Delicious Dishes</h2>
+      <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=600&q=80" alt="Dish 1" />
+      <img src="https://images.unsplash.com/photo-1543353071-087092ec393e?auto=format&fit=crop&w=600&q=80" alt="Dish 2" />
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80" alt="Dish 3" />
+      <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=600&q=80" alt="Dish 4" />
+      <img src="https://images.unsplash.com/photo-1498575207490-2d03b1a72f5e?auto=format&fit=crop&w=600&q=80" alt="Dish 5" />
+      <img src="https://images.unsplash.com/photo-1512058564366-c9aefcf30b48?auto=format&fit=crop&w=600&q=80" alt="Dish 6" />
+    </section>
+
+    <section id="testimonials">
+      <h2>What Our Customers Say</h2>
+      <div class="testimonial-box">
+        The food arrived hot and fresh every time. Amazing service and delightful dishes!
+      </div>
+      <div class="testimonial-box">
+        Quick delivery and the packaging was perfect. Definitely ordering again!
+      </div>
+      <div class="testimonial-box">
+        The customer support was very helpful when I had questions about the menu.
+      </div>
+    </section>
+
+    <section id="team">
+      <h2>Meet Our Team</h2>
+      <div class="team-members">
+        <div class="team-member">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Chef Anna" />
+          <h3>Chef Anna</h3>
+          <p>Head Chef with 10 years of culinary expertise, crafting every dish with love.</p>
+        </div>
+        <div class="team-member">
+          <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="Manager John" />
+          <h3>Manager John</h3>
+          <p>Ensuring every order and experience is perfect for you.</p>
+        </div>
+        <div class="team-member">
+          <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Chef Maria" />
+          <h3>Chef Maria</h3>
+          <p>Specialist in desserts and sweets, making your cravings come true.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    &copy; 2025 Savor Havens. All Rights Reserved.
+  </footer>
+
+</body>
+</html>
