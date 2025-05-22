@@ -23,7 +23,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Database connection settings (adjust database name and credentials as needed)
-$dsn = "mysql:host=localhost;dbname=restaurant_db;charset=utf8";
+$dsn = "mysql:host=localhost;dbname=restaurant_system;charset=utf8mb4";
 $dbUser = "root";
 $dbPassword = "";
 try {
@@ -34,7 +34,6 @@ try {
 }
 
 // Fetch user information from Customers table
-// Assuming 'customer_id' is the primary key and matches Orders.customer_id
 try {
     $stmtUser = $pdo->prepare("SELECT * FROM Customers WHERE username = ?");
     $stmtUser->execute([$_SESSION['username']]);
@@ -43,7 +42,6 @@ try {
     die("Error fetching user data: " . $e->getMessage());
 }
 
-// If user data not found, clear session and redirect to login
 if (!$user) {
     session_destroy();
     header("Location: login.html");
@@ -54,20 +52,19 @@ if (!$user) {
 $orders = [];
 try {
     $stmtOrders = $pdo->prepare("SELECT * FROM Orders WHERE customer_id = ?");
-    $stmtOrders->execute([$user['customer_id']]);
+    $stmtOrders->execute([$user['id']]);
     $orders = $stmtOrders->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Error fetching orders: " . $e->getMessage());
 }
 
-// Fetch reservations for this user (assuming a Reservations table exists)
+// Fetch reservations for this user
 $reservations = [];
 try {
     $stmtRes = $pdo->prepare("SELECT * FROM Reservations WHERE customer_id = ?");
-    $stmtRes->execute([$user['customer_id']]);
+    $stmtRes->execute([$user['id']]);
     $reservations = $stmtRes->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    // If table doesn't exist or query fails, leave reservations empty
     $reservations = [];
 }
 ?>
@@ -363,10 +360,11 @@ try {
   <nav>
     <div class="logo">Savor Havens</div>
     <ul>
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#menu">Menu</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="home.php">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="order.html">Order</a></li>
+      <li><a href="reservation.html">Reservation</a></li>
+      <li><a href="contact.html">Contact</a></li>
       <li>
         <!-- Cart icon (non-functional placeholder) -->
         <a href="#cart" aria-label="Cart">
@@ -406,17 +404,16 @@ try {
       <h4>Order History</h4>
       <?php if (count($orders) > 0): ?>
         <?php foreach ($orders as $order): ?>
-          <p>Order #<?php echo $order['order_id']; ?> - <?php echo $order['order_date']; ?></p>
+          <p>Order #<?php echo $order['id']; ?> - <?php echo $order['order_date']; ?></p>
           <ul>
             <?php
-              // Fetch items for this order (assuming OrderDetails and MenuItems tables)
               $stmtItems = $pdo->prepare(
                 "SELECT MenuItems.name, OrderDetails.quantity 
                  FROM OrderDetails 
-                 JOIN MenuItems ON OrderDetails.item_id = MenuItems.item_id 
+                 JOIN MenuItems ON OrderDetails.menu_item_id = MenuItems.id 
                  WHERE OrderDetails.order_id = ?"
               );
-              $stmtItems->execute([$order['order_id']]);
+              $stmtItems->execute([$order['id']]);
               $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
               foreach ($items as $item) {
                   echo "<li>" . htmlspecialchars($item['name']) . " x" . $item['quantity'] . "</li>";
@@ -431,7 +428,7 @@ try {
       <h4>Reservations</h4>
       <?php if (count($reservations) > 0): ?>
         <?php foreach ($reservations as $res): ?>
-          <p><?php echo $res['reservation_date']; ?> - Party of <?php echo $res['party_size']; ?></p>
+          <p><?php echo $res['reservation_date']; ?> - Party of <?php echo $res['guests']; ?></p>
         <?php endforeach; ?>
       <?php else: ?>
         <p>No reservations made.</p>
