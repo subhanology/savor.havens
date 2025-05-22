@@ -1,11 +1,83 @@
-<!-- home.html -->
+<?php
+// Step 1: Database credentials
+$host = "localhost";
+$user = "root";
+$pass = ""; // use your password if not empty
+$db = "restaurant_system"; // change this to your actual database name
+
+// Step 2: Connect to MySQL
+$conn = new mysqli($host, $user, $pass, $db);
+
+// Step 3: Check for connection error
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+// Start session and verify user login
+session_start();
+if (!isset($_SESSION['username'])) {
+    // If not logged in, redirect to login page
+    header("Location: login.html");
+    exit();
+}
+
+// Database connection settings (adjust database name and credentials as needed)
+$dsn = "mysql:host=localhost;dbname=restaurant_db;charset=utf8";
+$dbUser = "root";
+$dbPassword = "";
+try {
+    $pdo = new PDO($dsn, $dbUser, $dbPassword);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
+
+// Fetch user information from Customers table
+// Assuming 'customer_id' is the primary key and matches Orders.customer_id
+try {
+    $stmtUser = $pdo->prepare("SELECT * FROM Customers WHERE username = ?");
+    $stmtUser->execute([$_SESSION['username']]);
+    $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error fetching user data: " . $e->getMessage());
+}
+
+// If user data not found, clear session and redirect to login
+if (!$user) {
+    session_destroy();
+    header("Location: login.html");
+    exit();
+}
+
+// Fetch order history for this user
+$orders = [];
+try {
+    $stmtOrders = $pdo->prepare("SELECT * FROM Orders WHERE customer_id = ?");
+    $stmtOrders->execute([$user['customer_id']]);
+    $orders = $stmtOrders->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error fetching orders: " . $e->getMessage());
+}
+
+// Fetch reservations for this user (assuming a Reservations table exists)
+$reservations = [];
+try {
+    $stmtRes = $pdo->prepare("SELECT * FROM Reservations WHERE customer_id = ?");
+    $stmtRes->execute([$user['customer_id']]);
+    $reservations = $stmtRes->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    // If table doesn't exist or query fails, leave reservations empty
+    $reservations = [];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Savor Havens - Home</title>
+  <title>Savor Havens - Dashboard</title>
   <style>
-    /* Reset and base styles */
+    /* Reset and base styles (same as home.html) */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -237,9 +309,28 @@
       border: none;
       background: none;
     }
-    #accountPanel .panel-content a {
+    #accountPanel .panel-content {
+      font-size: 0.95rem;
+      color: #444;
+    }
+    #accountPanel .panel-content h4 {
+      margin-bottom: 10px;
+      color: #00796b;
+    }
+    #accountPanel .panel-content p {
+      margin-bottom: 10px;
+    }
+    #accountPanel .panel-content ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0 0 10px 0;
+    }
+    #accountPanel .panel-content li {
+      margin-bottom: 5px;
+    }
+    #accountPanel .panel-content .logout-btn {
       display: block;
-      margin: 10px 0;
+      margin-top: 15px;
       padding: 10px;
       background: #00796b;
       color: white;
@@ -248,7 +339,7 @@
       border-radius: 6px;
       transition: background 0.3s ease;
     }
-    #accountPanel .panel-content a:hover {
+    #accountPanel .panel-content .logout-btn:hover {
       background: #004d40;
     }
     /* Overlay to dim background when panel is open */
@@ -268,7 +359,7 @@
   </style>
 </head>
 <body>
-  <!-- Navigation bar with logo and links -->
+  <!-- Navigation bar -->
   <nav>
     <div class="logo">Savor Havens</div>
     <ul>
@@ -280,35 +371,74 @@
         <!-- Cart icon (non-functional placeholder) -->
         <a href="#cart" aria-label="Cart">
           <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm0
-            2m10-2c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3h11.17c.55 0
-            1.04-.35 1.21-.87l2.58-7.49a.996.996 0 0 0-.96-1.34H6.21L5.27 4H2v2h2l3.6 
+            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm0 
+            2m10-2c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3h11.17c.55 
+            0 1.04-.35 1.21-.87l2.58-7.49a.996.996 0 0 0-.96-1.34H6.21L5.27 4H2v2h2l3.6 
             7.59-1.35 2.44c-.18.32-.27.69-.27 1.07 0 1.1.9 2 2 2z"/>
           </svg>
-          <span id="cart-count">0</span>
         </a>
       </li>
       <li>
         <!-- Account icon that triggers the account panel -->
         <a href="#account" aria-label="My Account" id="accountLink">
           <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2
-            4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 
+            4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 
             4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
           </svg>
         </a>
       </li>
     </ul>
   </nav>
-  <!-- Right-side account panel for Login/Signup -->
+  <!-- Right-side account panel for profile and history -->
   <div id="accountPanel">
     <div class="panel-header">
-      <span>Account</span>
+      <span>My Account</span>
       <button id="closeAccount">&times;</button>
     </div>
     <div class="panel-content">
-      <a href="login.html">Login</a>
-      <a href="signup.html">Sign Up</a>
+      <h4>My Profile</h4>
+      <p><strong>Name:</strong> <?php echo htmlspecialchars($user['name']); ?></p>
+      <p><strong>Contact:</strong> <?php echo htmlspecialchars($user['contact']); ?></p>
+      <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+      <p><strong>Address:</strong> <?php echo htmlspecialchars($user['address']); ?></p>
+
+      <h4>Order History</h4>
+      <?php if (count($orders) > 0): ?>
+        <?php foreach ($orders as $order): ?>
+          <p>Order #<?php echo $order['order_id']; ?> - <?php echo $order['order_date']; ?></p>
+          <ul>
+            <?php
+              // Fetch items for this order (assuming OrderDetails and MenuItems tables)
+              $stmtItems = $pdo->prepare(
+                "SELECT MenuItems.name, OrderDetails.quantity 
+                 FROM OrderDetails 
+                 JOIN MenuItems ON OrderDetails.item_id = MenuItems.item_id 
+                 WHERE OrderDetails.order_id = ?"
+              );
+              $stmtItems->execute([$order['order_id']]);
+              $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
+              foreach ($items as $item) {
+                  echo "<li>" . htmlspecialchars($item['name']) . " x" . $item['quantity'] . "</li>";
+              }
+            ?>
+          </ul>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p>No orders found.</p>
+      <?php endif; ?>
+
+      <h4>Reservations</h4>
+      <?php if (count($reservations) > 0): ?>
+        <?php foreach ($reservations as $res): ?>
+          <p><?php echo $res['reservation_date']; ?> - Party of <?php echo $res['party_size']; ?></p>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p>No reservations made.</p>
+      <?php endif; ?>
+
+      <!-- Logout option -->
+      <a href="logout.php" class="logout-btn">Logout</a>
     </div>
   </div>
   <!-- Overlay for closing panel when clicking outside -->
@@ -317,57 +447,14 @@
   <section class="hero" id="home">
     <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1470&q=80" alt="Delicious Food" />
     <div class="hero-text">
-      Taste the magic of Savor Havens – Your online culinary delight!
+      Welcome back, <?php echo htmlspecialchars($user['name']); ?>! Taste the magic of Savor Havens.
     </div>
   </section>
   <!-- Main content container -->
   <div class="container">
-    <!-- Gallery section showcasing dishes -->
-    <section id="gallery">
-      <h2>Our Delicious Dishes</h2>
-      <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=600&q=80" alt="Dish 1" />
-      <img src="https://images.unsplash.com/photo-1543353071-087092ec393e?auto=format&fit=crop&w=600&q=80" alt="Dish 2" />
-      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80" alt="Dish 3" />
-      <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=600&q=80" alt="Dish 4" />
-      <img src="https://images.unsplash.com/photo-1498575207490-2d03b1a72f5e?auto=format&fit=crop&w=600&q=80" alt="Dish 5" />
-      <img src="https://images.unsplash.com/photo-1512058564366-c9aefcf30b48?auto=format&fit=crop&w=600&q=80" alt="Dish 6" />
-    </section>
-    <!-- Testimonials section with customer quotes -->
-    <section id="testimonials">
-      <h2>What Our Customers Say</h2>
-      <div class="testimonial-box">
-        The food arrived hot and fresh every time. Amazing service and delightful dishes!
-      </div>
-      <div class="testimonial-box">
-        Quick delivery and the packaging was perfect. Definitely ordering again!
-      </div>
-      <div class="testimonial-box">
-        The customer support was very helpful when I had questions about the menu.
-      </div>
-    </section>
-    <!-- Team section highlighting staff -->
-    <section id="team">
-      <h2>Meet Our Team</h2>
-      <div class="team-members">
-        <div class="team-member">
-          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Chef Anna" />
-          <h3>Chef Anna</h3>
-          <p>Head Chef with 10 years of culinary expertise, crafting every dish with love.</p>
-        </div>
-        <div class="team-member">
-          <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="Manager John" />
-          <h3>Manager John</h3>
-          <p>Ensuring every order and experience is perfect for you.</p>
-        </div>
-        <div class="team-member">
-          <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Chef Maria" />
-          <h3>Chef Maria</h3>
-          <p>Specialist in desserts and sweets, making your cravings come true.</p>
-        </div>
-      </div>
-    </section>
+    <!-- (Optional additional dashboard content could go here) -->
   </div>
-  <!-- Footer with copyright -->
+  <!-- Footer -->
   <footer>
     &copy; 2025 Savor Havens. All Rights Reserved.
   </footer>

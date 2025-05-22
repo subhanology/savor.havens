@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Savor Havens - Login</title>
+  <title>Savor Havens - Place Order</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,7 +22,7 @@
       border-radius: 10px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
     }
     h2 {
       text-align: center;
@@ -35,14 +35,17 @@
       font-weight: 600;
       color: #333;
     }
+    select,
     input[type="text"],
-    input[type="password"] {
+    input[type="number"],
+    textarea {
       width: 100%;
       padding: 10px;
       margin-bottom: 18px;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 14px;
+      resize: vertical;
     }
     button {
       width: 100%;
@@ -57,17 +60,6 @@
     }
     button:hover {
       background-color: #004d40;
-    }
-    p {
-      text-align: center;
-      margin-top: 15px;
-    }
-    a {
-      color: #00796b;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
     }
     nav {
       display: flex;
@@ -116,12 +108,39 @@
     </ul>
   </nav>
   <div class="container">
-    <form action="login.php" method="POST">
-      <h2>Login</h2>
-      <label>Username:</label><input type="text" name="username" required>
-      <label>Password:</label><input type="password" name="password" required>
-      <button type="submit">Login</button>
-      <p>New user? <a href="signup.html">Sign up here</a></p>
+    <form action="order.php" method="POST">
+      <h2>Place an Order</h2>
+      <label>Item 1:</label>
+      <select name="item1" required>
+        <option value="">--Select Item--</option>
+        <option>Margherita Pizza</option>
+        <option>Classic Burger</option>
+        <option>Caesar Salad</option>
+        <option>Spaghetti Bolognese</option>
+        <option>Grilled Salmon</option>
+      </select>
+      <label>Quantity:</label><input type="number" name="quantity1" min="1" value="1" required>
+      <label>Item 2:</label>
+      <select name="item2">
+        <option value="">--Select Item--</option>
+        <option>Margherita Pizza</option>
+        <option>Classic Burger</option>
+        <option>Caesar Salad</option>
+        <option>Spaghetti Bolognese</option>
+        <option>Grilled Salmon</option>
+      </select>
+      <label>Quantity:</label><input type="number" name="quantity2" min="1" value="1">
+      <label>Item 3:</label>
+      <select name="item3">
+        <option value="">--Select Item--</option>
+        <option>Margherita Pizza</option>
+        <option>Classic Burger</option>
+        <option>Caesar Salad</option>
+        <option>Spaghetti Bolognese</option>
+        <option>Grilled Salmon</option>
+      </select>
+      <label>Quantity:</label><input type="number" name="quantity3" min="1" value="1">
+      <button type="submit">Submit Order</button>
     </form>
   </div>
 </body>

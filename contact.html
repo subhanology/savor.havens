@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Savor Havens - Login</title>
+  <title>Savor Havens - Contact Us</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,7 +22,7 @@
       border-radius: 10px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
     }
     h2 {
       text-align: center;
@@ -36,13 +36,16 @@
       color: #333;
     }
     input[type="text"],
-    input[type="password"] {
+    input[type="email"],
+    select,
+    textarea {
       width: 100%;
       padding: 10px;
       margin-bottom: 18px;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 14px;
+      resize: vertical;
     }
     button {
       width: 100%;
@@ -57,17 +60,6 @@
     }
     button:hover {
       background-color: #004d40;
-    }
-    p {
-      text-align: center;
-      margin-top: 15px;
-    }
-    a {
-      color: #00796b;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
     }
     nav {
       display: flex;
@@ -116,12 +108,21 @@
     </ul>
   </nav>
   <div class="container">
-    <form action="login.php" method="POST">
-      <h2>Login</h2>
-      <label>Username:</label><input type="text" name="username" required>
-      <label>Password:</label><input type="password" name="password" required>
-      <button type="submit">Login</button>
-      <p>New user? <a href="signup.html">Sign up here</a></p>
+    <form action="contact.php" method="POST">
+      <h2>Contact Us</h2>
+      <label>Name:</label><input type="text" name="name" required>
+      <label>Email:</label><input type="email" name="email" required>
+      <label>Rating:</label>
+      <select name="rating" required>
+        <option value="">--Select Rating--</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+      <label>Comments:</label><textarea name="comments" rows="3"></textarea>
+      <button type="submit">Send Feedback</button>
     </form>
   </div>
 </body>

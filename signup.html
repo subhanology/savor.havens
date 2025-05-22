@@ -7,13 +7,15 @@
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(to right, #f8f9fa, #e0f7fa);
+      margin: 0;
+    }
+    .container {
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      margin: 0;
+      min-height: 80vh;
+      padding: 20px;
     }
-
     form {
       background-color: white;
       padding: 30px 40px;
@@ -22,20 +24,17 @@
       width: 100%;
       max-width: 400px;
     }
-
     h2 {
       text-align: center;
       margin-bottom: 20px;
       color: #00796b;
     }
-
     label {
       display: block;
       margin-bottom: 6px;
       font-weight: 600;
       color: #333;
     }
-
     input[type="text"],
     input[type="email"],
     input[type="password"] {
@@ -46,7 +45,6 @@
       border-radius: 6px;
       font-size: 14px;
     }
-
     button {
       width: 100%;
       padding: 10px;
@@ -58,37 +56,78 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-
     button:hover {
       background-color: #004d40;
     }
-
     p {
       text-align: center;
       margin-top: 15px;
     }
-
     a {
       color: #00796b;
       text-decoration: none;
     }
-
     a:hover {
       text-decoration: underline;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+    }
+    nav .logo {
+      font-weight: 700;
+      font-size: 24px;
+      color: #00796b;
+      cursor: default;
+      user-select: none;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #00796b;
+      font-weight: 600;
+    }
+    nav ul li a:hover {
+      color: #004d40;
     }
   </style>
 </head>
 <body>
-  <form action="connect.php" method="POST">
-    <h2>Sign Up</h2>
-    <label>Username:</label><input type="text" name="username" required>
-    <label>Name:</label><input type="text" name="name" required>
-    <label>Contact:</label><input type="text" name="contact" required>
-    <label>Email:</label><input type="email" name="email" required>
-    <label>Address:</label><input type="text" name="address" required>
-    <label>Password:</label><input type="password" name="password" required>
-    <button type="submit">Register</button>
-    <p>Already have an account? <a href="login.html">Login here</a></p>
-  </form>
+  <nav>
+    <div class="logo">Savor Havens</div>
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="signup.html">Sign Up</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="order.html">Order</a></li>
+      <li><a href="reservation.html">Reservation</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <form action="signup.php" method="POST">
+      <h2>Sign Up</h2>
+      <label>Username:</label><input type="text" name="username" required>
+      <label>Name:</label><input type="text" name="name" required>
+      <label>Contact:</label><input type="text" name="contact" required>
+      <label>Email:</label><input type="email" name="email" required>
+      <label>Address:</label><input type="text" name="address" required>
+      <label>Password:</label><input type="password" name="password" required>
+      <button type="submit">Register</button>
+      <p>Already have an account? <a href="login.html">Login here</a></p>
+    </form>
+  </div>
 </body>
 </html>

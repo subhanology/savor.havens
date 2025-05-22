@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Savor Havens - Login</title>
+  <title>Savor Havens - Menu</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -10,64 +10,33 @@
       margin: 0;
     }
     .container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 80vh;
+      max-width: 800px;
+      margin: 40px auto;
       padding: 20px;
-    }
-    form {
-      background-color: white;
-      padding: 30px 40px;
-      border-radius: 10px;
+      background: white;
+      border-radius: 8px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
     }
     h2 {
       text-align: center;
       margin-bottom: 20px;
       color: #00796b;
     }
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #333;
+    .menu-item {
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
     }
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 18px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
+    .menu-item:last-child {
+      border-bottom: none;
     }
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #00796b;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #004d40;
-    }
-    p {
-      text-align: center;
-      margin-top: 15px;
-    }
-    a {
+    .menu-item h3 {
+      margin: 0;
       color: #00796b;
-      text-decoration: none;
     }
-    a:hover {
-      text-decoration: underline;
+    .menu-item p {
+      margin: 5px 0 0;
+      color: #333;
+      font-size: 14px;
     }
     nav {
       display: flex;
@@ -116,13 +85,27 @@
     </ul>
   </nav>
   <div class="container">
-    <form action="login.php" method="POST">
-      <h2>Login</h2>
-      <label>Username:</label><input type="text" name="username" required>
-      <label>Password:</label><input type="password" name="password" required>
-      <button type="submit">Login</button>
-      <p>New user? <a href="signup.html">Sign up here</a></p>
-    </form>
+    <h2>Our Menu</h2>
+    <div class="menu-item">
+      <h3>Margherita Pizza - $12.99</h3>
+      <p>Classic pizza with fresh mozzarella and basil.</p>
+    </div>
+    <div class="menu-item">
+      <h3>Classic Burger - $10.99</h3>
+      <p>Juicy beef patty with lettuce, tomato, and our special sauce.</p>
+    </div>
+    <div class="menu-item">
+      <h3>Caesar Salad - $8.99</h3>
+      <p>Crisp romaine with Caesar dressing, croutons, and parmesan.</p>
+    </div>
+    <div class="menu-item">
+      <h3>Spaghetti Bolognese - $11.99</h3>
+      <p>Homemade spaghetti with hearty meat sauce.</p>
+    </div>
+    <div class="menu-item">
+      <h3>Grilled Salmon - $14.99</h3>
+      <p>Fresh grilled salmon served with seasonal vegetables.</p>
+    </div>
   </div>
 </body>
 </html>
